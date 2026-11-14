@@ -1,26 +1,12 @@
-// 阿里云镜像 + Google Maven + 官方源
-// 注意：Compose Multiplatform 的 wasm 产物依赖 androidx.savedstate / lifecycle，
-// 这些只在 Google Maven 有，必须加 google 源。
+// 只保留 pluginManagement。
+// 关键：不要在这里声明 dependencyResolutionManagement 的 repositoriesMode，
+// 否则会覆盖 Kotlin 插件自动注入的 nodejs.org（Ivy）仓库，
+// 导致 org.nodejs:node 在 Maven 里找不到而失败。
 pluginManagement {
     repositories {
-        maven("https://maven.aliyun.com/repository/gradle-plugin")
-        maven("https://maven.aliyun.com/repository/google")
-        maven("https://maven.aliyun.com/repository/public")
-        google()
         gradlePluginPortal()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    }
-}
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-    repositories {
-        maven("https://maven.aliyun.com/repository/google")
-        maven("https://maven.aliyun.com/repository/central")
-        maven("https://maven.aliyun.com/repository/public")
         google()
-        mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }

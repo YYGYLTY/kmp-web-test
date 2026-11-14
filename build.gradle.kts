@@ -4,6 +4,13 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.3.21"
 }
 
+// 仓库声明在项目级：Kotlin 插件会在此基础上追加 nodejs.org（Ivy）仓库
+repositories {
+    mavenCentral()
+    google()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+}
+
 kotlin {
     wasmJs {
         browser {
