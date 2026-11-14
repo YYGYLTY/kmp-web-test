@@ -4,7 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.3.21"
 }
 
-// 仓库声明在项目级：Kotlin 插件会在此基础上追加 nodejs.org（Ivy）仓库
 repositories {
     mavenCentral()
     google()
@@ -22,15 +21,29 @@ kotlin {
     }
 
     sourceSets {
-        val wasmJsMain by getting {
+        val commonMain by getting {
             dependencies {
-                // material3 的版本号与 CMP 主版本不同步，必须用插件别名
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.ui)
-                implementation("org.jetbrains.kotlinx:kotlinx-browser:0.4.0")
+                implementation(compose.animation)
+                implementation(compose.components.resources)
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+            }
+        }
+
+        val wasmJsMain by getting {
+            dependencies {
+                // HomeScreen 用到 material icons（Crop/Download/Edit/ExpandLess/...）
+                implementation(compose.materialIconsExtended)
             }
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.pixelcolorpicker.resources"
+    generateResClass = always
 }
