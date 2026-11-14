@@ -213,7 +213,7 @@ object Pixelator {
     ): IntArray {
         // [Web 移植] Android Bitmap 加速分支在 wasm 不可用，直接走纯 Kotlin 采样。
         // 合并回主项目时应改为 expect/actual：androidMain 保留 Bitmap 实现，wasmJsMain 返回 null。
-        run {
+        return run {
             val out = IntArray(outW * outH)
             for (j in 0 until outH) {
                 for (i in 0 until outW) {
