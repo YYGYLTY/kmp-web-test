@@ -1,5 +1,6 @@
 package com.pixelcolorpicker.image
 
+import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.cos
@@ -95,7 +96,7 @@ object Pixelator {
         val out = IntArray(outW * outH)
 
         val safeScale = scale.coerceAtLeast(0.01f)
-        val rad = Math.toRadians(-rotationDeg.toDouble())
+        val rad = -rotationDeg.toDouble() * PI / 180.0
         val cosT = cos(rad).toFloat()
         val sinT = sin(rad).toFloat()
 
@@ -210,16 +211,9 @@ object Pixelator {
         outW: Int,
         outH: Int,
     ): IntArray {
-        return try {
-            val bmp = android.graphics.Bitmap.createBitmap(src, srcW, srcH, android.graphics.Bitmap.Config.ARGB_8888)
-            val scaled = android.graphics.Bitmap.createScaledBitmap(bmp, outW, outH, false)
-            val out = IntArray(outW * outH)
-            scaled.getPixels(out, 0, outW, 0, 0, outW, outH)
-            bmp.recycle()
-            if (scaled !== bmp) scaled.recycle()
-            out
-        } catch (t: Throwable) {
-            // 失败时退化为自研采样
+        // [Web 移植] Android Bitmap 加速分支在 wasm 不可用，直接走纯 Kotlin 采样。
+        // 合并回主项目时应改为 expect/actual：androidMain 保留 Bitmap 实现，wasmJsMain 返回 null。
+        run {
             val out = IntArray(outW * outH)
             for (j in 0 until outH) {
                 for (i in 0 until outW) {
@@ -366,7 +360,7 @@ object Pixelator {
         val at = abs(t)
         if (at < 1e-6f) return 1f
         if (at >= a) return 0f
-        val pt = Math.PI.toFloat() * t
+        val pt = PI.toFloat() * t
         return (sin(pt) / pt) * (sin(pt / a) / (pt / a))
     }
 

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -156,7 +157,7 @@ private fun TopHeader(
         val interaction = remember { MutableInteractionSource() }
         Box(
             modifier = Modifier
-                .offsetY(-2)
+                .offset(y = (-2).dp)
                 .padding(start = 4.dp, end = 8.dp)
                 .size(32.dp)
                 .circleIconBg()
@@ -172,10 +173,6 @@ private fun TopHeader(
         }
     }
 }
-
-/** offset(y = (-2).dp) 的 Web 等价写法 */
-private fun Modifier.offsetY(dp: Int): Modifier =
-    this.then(androidx.compose.foundation.layout.offset(y = dp.dp))
 
 // ==================== 2. 画布尺寸卡片 ====================
 
